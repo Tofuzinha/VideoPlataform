@@ -100,3 +100,14 @@ a {
   height: 100vh;
 }
 
+.franchise {
+  width: 100px;
+  height: 100px;
+  background-color: #808080;
+  margin: 1rem;
+  border-radius: 2rem;
+}
+
+.video-feed {
+  display: flex;
+}

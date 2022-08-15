@@ -1,7 +1,5 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { useState } from 'react';
-import Link from 'next/link';
- 
 
 export const getServerSideProps = async (pageContext) => {
 
@@ -29,10 +27,10 @@ export const getServerSideProps = async (pageContext) => {
                     slug,
                     tags,
                     thumbnail {
-                    url
+                        url
                     },
                     mp4 {
-                    url
+                        url
                     }
                 }
         }
@@ -52,31 +50,44 @@ export const getServerSideProps = async (pageContext) => {
     }
 }
 
+const changeToSeen = async (slug) => {
+    await fetch('/api/changeToSeen', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'aplication/json'
+        },
+        body: JSON.stringify({ slug })
+    })
+    console.log(slug);
+}
+
 const Video = ({ video }) => {
 
     const [watching, setWatching] = useState(false);
 
 
     return (
-        <div>
-            {!watching && (
-            <div>
+        <>
+            {!watching && 
                 <img className="video-image" src={video.thumbnail.url} alt={video.title} />
-                
+            }    
+            {!watching && 
                 <div className="info">
                     <p>{video.tags.join(', ')}</p>
                     <p>{video.description}</p>
-                    <a src="/"> <p>go back</p> </a>
+                    <a href="/"><p>go back</p></a>
                     <button 
-                    className={"video-overlay"}
-                    onClick={() => { watching ? setWatching(false) : setWatching(true) }}
+                        className={"video-overlay"}
+                        onClick={() => {
+                            changeToSeen(video.slug)
+                            watching ? setWatching(false) : setWatching(true) 
+                            }}
                     
                     >PLAY</button>
                 </div>
-            </div>
-            )}
+            }
             {watching && (
-                <video width="100%" controls>
+                <video width="100%" controls autoPlay>
                     <source src={video.mp4.url} type="video/mp4" />
                 </video>
             )}
@@ -87,7 +98,7 @@ const Video = ({ video }) => {
 
             </div>
 
-        </div>
+        </>
     )
 } 
 
