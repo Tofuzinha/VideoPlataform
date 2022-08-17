@@ -12,7 +12,6 @@ const NavBar = ({account}) => {
                 <p>Wellcome {account.username}</p>
                 <img className="avatar" src={account.avatar.url} />
             </div>
-        
         </div>
     )
 }
